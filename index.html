@@ -1,0 +1,1460 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flex Fit Jersey -- Custom Team Jerseys</title>
+
+    <!-- ==================== CSS ==================== -->
+    <style>
+        :root {
+            --bg: #0b0b0b;
+            --surface: #161616;
+            --surface2: #1e1e1e;
+            --surface3: #262626;
+            --gold: #d4a853;
+            --gold-light: #e8c97a;
+            --gold-dark: #b0893c;
+            --text: #e6e6e6;
+            --text-muted: #a0a0a0;
+            --text-dim: #6b6b6b;
+            --danger: #e05555;
+            --success: #4caf84;
+            --radius: 12px;
+            --radius-sm: 8px;
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-heading: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --font-body: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --shadow-card: 0 2px 16px rgba(0, 0, 0, 0.45);
+            --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.6);
+            --max-width: 1200px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ========== TYPOGRAPHY ========== */
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+        h1 {
+            font-size: clamp(2.4rem, 5vw, 3.6rem);
+            line-height: 1.15;
+        }
+        h2 {
+            font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+            margin-bottom: 0.5rem;
+        }
+        h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+        }
+        .section-subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+            letter-spacing: 0.01em;
+        }
+
+        /* ========== GOLD ACCENT TEXT ========== */
+        .gold-text {
+            color: var(--gold);
+        }
+        .gold-underline {
+            display: inline-block;
+            position: relative;
+        }
+        .gold-underline::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--gold);
+            border-radius: 3px;
+        }
+
+        /* ========== NAVIGATION ========== */
+        .nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(11, 11, 11, 0.85);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 0 1.5rem;
+            transition: var(--transition);
+        }
+        .nav-inner {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+        .nav-logo {
+            font-family: var(--font-heading);
+            font-weight: 800;
+            font-size: 1.35rem;
+            letter-spacing: -0.03em;
+            color: var(--text);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .nav-logo .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--gold);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #0b0b0b;
+            font-weight: 900;
+            flex-shrink: 0;
+        }
+        .nav-links {
+            display: flex;
+            gap: 0.3rem;
+            list-style: none;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 0.5rem 0.9rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+        .nav-links a:hover,
+        .nav-links a:focus {
+            color: var(--gold-light);
+            background: rgba(212, 168, 83, 0.08);
+        }
+        .nav-hamburger {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            flex-direction: column;
+            gap: 5px;
+            padding: 8px;
+            z-index: 1001;
+        }
+        .nav-hamburger span {
+            display: block;
+            width: 26px;
+            height: 2.5px;
+            background: var(--text);
+            border-radius: 3px;
+            transition: var(--transition);
+        }
+
+        /* ========== SECTIONS ========== */
+        .section {
+            padding: 4rem 1.5rem;
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+        .section-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        /* ========== HERO ========== */
+        .hero {
+            text-align: center;
+            padding: 5rem 1.5rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -120px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(212, 168, 83, 0.12) 0%, transparent 70%);
+            pointer-events: none;
+            border-radius: 50%;
+        }
+        .hero h1 {
+            margin-bottom: 0.6rem;
+            position: relative;
+        }
+        .hero .tagline {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+        .pricing-cards {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+        .price-card {
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: var(--radius);
+            padding: 1.8rem 2rem;
+            min-width: 220px;
+            flex: 1 1 220px;
+            max-width: 300px;
+            text-align: center;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .price-card:hover {
+            border-color: rgba(212, 168, 83, 0.35);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+        .price-card.featured {
+            border-color: var(--gold-dark);
+            background: var(--surface2);
+        }
+        .price-card .price-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .price-card .price-amount {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--gold);
+            font-family: var(--font-heading);
+        }
+        .price-card .price-label {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
+        }
+        .rules-note {
+            margin-top: 2rem;
+            display: inline-flex;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+            justify-content: center;
+            background: var(--surface);
+            border-radius: 50px;
+            padding: 0.9rem 2rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            position: relative;
+            z-index: 1;
+        }
+        .rules-note span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .rules-note .rule-icon {
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        /* ========== GALLERY GRID ========== */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        .design-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            overflow: hidden;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            group: true;
+        }
+        .design-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(212, 168, 83, 0.3);
+        }
+        .design-card:hover .card-overlay {
+            opacity: 1;
+        }
+        .card-img-wrapper {
+            width: 100%;
+            aspect-ratio: 3/4;
+            background: var(--surface2);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        .design-card:hover .card-img-wrapper img {
+            transform: scale(1.06);
+        }
+        .card-img-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-dim);
+            font-size: 0.85rem;
+        }
+        .card-img-placeholder .placeholder-icon {
+            font-size: 3rem;
+            opacity: 0.5;
+        }
+        .card-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.65);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+        .card-overlay span {
+            background: var(--gold);
+            color: #0b0b0b;
+            padding: 0.6rem 1.4rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 0.02em;
+        }
+        .card-info {
+            padding: 1rem 1.2rem;
+        }
+        .card-info h3 {
+            margin-bottom: 0.2rem;
+            font-size: 1rem;
+        }
+        .card-info .card-type {
+            font-size: 0.8rem;
+            color: var(--gold);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* ========== FORMS ========== */
+        .form-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            max-width: 750px;
+            margin: 0 auto;
+        }
+        .form-group {
+            margin-bottom: 1.3rem;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            font-size: 0.9rem;
+            color: var(--text);
+        }
+        .form-group label .required-star {
+            color: var(--gold);
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--surface2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            transition: var(--transition);
+            resize: vertical;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(212, 168, 83, 0.12);
+            background: var(--surface3);
+        }
+        .form-group select {
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23a0a0a0' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            padding-right: 2.5rem;
+            cursor: pointer;
+        }
+        .form-group textarea {
+            min-height: 100px;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        .form-row-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* ========== BUTTONS ========== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+            text-decoration: none;
+            font-family: var(--font-body);
+            letter-spacing: 0.01em;
+        }
+        .btn-gold {
+            background: var(--gold);
+            color: #0b0b0b;
+        }
+        .btn-gold:hover {
+            background: var(--gold-light);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(212, 168, 83, 0.3);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--gold);
+            color: var(--gold);
+        }
+        .btn-outline:hover {
+            background: rgba(212, 168, 83, 0.08);
+            transform: translateY(-2px);
+        }
+        .btn-sm {
+            padding: 0.5rem 1.2rem;
+            font-size: 0.85rem;
+        }
+
+        /* ========== MODAL ========== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .modal {
+            background: var(--surface);
+            border-radius: var(--radius);
+            width: 100%;
+            max-width: 750px;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 2rem;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(30px);
+            transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+        .modal-overlay.active .modal {
+            transform: translateY(0);
+        }
+        .modal-close {
+            position: sticky;
+            top: 0;
+            float: right;
+            z-index: 10;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--surface3);
+            border: none;
+            color: var(--text);
+            font-size: 1.3rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            margin: -0.5rem -0.5rem 0 0;
+        }
+        .modal-close:hover {
+            background: var(--danger);
+            color: #fff;
+        }
+        .modal-header {
+            margin-bottom: 1.5rem;
+            padding-right: 50px;
+        }
+        .modal-header h2 {
+            margin-bottom: 0.2rem;
+        }
+        .modal-header .design-ref {
+            color: var(--gold);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        /* ========== PLAYER BLOCKS ========== */
+        .player-blocks-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-top: 0.5rem;
+        }
+        .player-block {
+            background: var(--surface2);
+            border-radius: var(--radius-sm);
+            padding: 1rem 1.2rem;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            display: grid;
+            grid-template-columns: 40px 1fr 90px 110px;
+            gap: 0.8rem;
+            align-items: end;
+            transition: var(--transition);
+            animation: fadeSlideIn 0.3s ease forwards;
+        }
+        @keyframes fadeSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .player-block .player-index {
+            font-weight: 800;
+            color: var(--gold);
+            font-size: 1.1rem;
+            text-align: center;
+            align-self: center;
+        }
+        .player-block input,
+        .player-block select {
+            width: 100%;
+            padding: 0.55rem 0.7rem;
+            background: var(--surface3);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 6px;
+            color: var(--text);
+            font-size: 0.85rem;
+            font-family: var(--font-body);
+        }
+        .player-block input:focus,
+        .player-block select:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+        .player-block select {
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23a0a0a0' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.5rem center;
+            padding-right: 1.8rem;
+            cursor: pointer;
+        }
+        .player-block .pb-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--text-dim);
+            margin-bottom: 2px;
+            display: block;
+        }
+
+        /* ========== PRICE SUMMARY ========== */
+        .price-summary {
+            background: var(--surface2);
+            border-radius: var(--radius-sm);
+            padding: 1.2rem 1.5rem;
+            margin-top: 1.5rem;
+            border: 1px solid rgba(212, 168, 83, 0.2);
+        }
+        .price-summary .ps-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.35rem 0;
+            font-size: 0.9rem;
+        }
+        .price-summary .ps-row.total {
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: var(--gold);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            margin-top: 0.4rem;
+            padding-top: 0.7rem;
+        }
+
+        /* ========== CUSTOM DESIGN SECTION ========== */
+        .instructions-box {
+            background: var(--surface2);
+            border-radius: var(--radius-sm);
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 3px solid var(--gold);
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+        .instructions-box ol {
+            padding-left: 1.2rem;
+            margin-top: 0.3rem;
+        }
+        .instructions-box li {
+            margin-bottom: 0.3rem;
+        }
+
+        /* ========== CONTACT SECTION ========== */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+        .contact-info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+        .contact-info-item .ci-icon {
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+        /* ========== FOOTER ========== */
+        .footer {
+            text-align: center;
+            padding: 2rem 1.5rem;
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        /* ========== TOAST ========== */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 3000;
+            background: var(--success);
+            color: #fff;
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+            transition: all 0.35s ease;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .toast.error {
+            background: var(--danger);
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 260px;
+                height: 100vh;
+                background: var(--surface);
+                flex-direction: column;
+                padding: 5rem 1.5rem 2rem;
+                gap: 0.2rem;
+                transition: right 0.35s ease;
+                border-left: 1px solid rgba(255, 255, 255, 0.06);
+                z-index: 999;
+            }
+            .nav-links.open {
+                right: 0;
+            }
+            .nav-links a {
+                padding: 0.8rem 1rem;
+                font-size: 1rem;
+                border-radius: 8px;
+            }
+            .nav-hamburger {
+                display: flex;
+            }
+            .form-row,
+            .form-row-3 {
+                grid-template-columns: 1fr;
+            }
+            .player-block {
+                grid-template-columns: 30px 1fr 70px 90px;
+                gap: 0.4rem;
+                padding: 0.8rem;
+            }
+            .player-block input,
+            .player-block select {
+                font-size: 0.8rem;
+                padding: 0.45rem 0.5rem;
+            }
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+            .pricing-cards {
+                flex-direction: column;
+                align-items: center;
+            }
+            .price-card {
+                max-width: 100%;
+                width: 100%;
+            }
+            .modal {
+                padding: 1.2rem;
+                max-height: 90vh;
+                border-radius: var(--radius) var(--radius) 0 0;
+                margin-top: auto;
+            }
+            .modal-overlay {
+                align-items: flex-end;
+                padding: 0;
+            }
+            .modal-overlay.active .modal {
+                transform: translateY(0);
+            }
+            .modal {
+                transform: translateY(100%);
+            }
+            .rules-note {
+                flex-direction: column;
+                gap: 0.5rem;
+                border-radius: var(--radius);
+                padding: 1rem 1.5rem;
+                text-align: left;
+            }
+        }
+        @media (max-width: 480px) {
+            .player-block {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+            .player-block .player-index {
+                text-align: left;
+                font-size: 0.9rem;
+            }
+            .section {
+                padding: 2.5rem 1rem;
+            }
+            .hero {
+                padding: 3rem 1rem 2.5rem;
+            }
+            .form-card {
+                padding: 1.2rem;
+            }
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+                gap: 0.8rem;
+            }
+        }
+
+        /* ========== SCROLLBAR ========== */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--surface3);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #444;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== NAVIGATION ==================== -->
+    <nav class="nav" id="nav">
+        <div class="nav-inner">
+            <a href="#home" class="nav-logo">
+                <span class="logo-icon">FF</span>
+                Flex Fit Jersey
+            </a>
+            <button class="nav-hamburger" id="navHamburger" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#shirts">Shirts</a></li>
+                <li><a href="#kits">Kits</a></li>
+                <li><a href="#custom">Custom Design</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ==================== HERO / OVERVIEW ==================== -->
+    <section class="hero" id="home">
+        <h1><span class="gold-text">Flex Fit</span> Jersey</h1>
+        <p class="tagline">Premium custom team jerseys -- designed for champions, delivered to your door.</p>
+
+        <div class="pricing-cards">
+            <div class="price-card">
+                <div class="price-icon">👕</div>
+                <div class="price-amount">Rs. 1,000</div>
+                <div class="price-label">Per Shirt</div>
+                <div style="color:var(--text-dim);font-size:0.8rem;margin-top:0.4rem;">Delivery: Rs. 500 (5 shirts)</div>
+            </div>
+            <div class="price-card featured">
+                <div class="price-icon">🩳</div>
+                <div class="price-amount">Rs. 1,700</div>
+                <div class="price-label">Per Full Kit</div>
+                <div style="color:var(--text-dim);font-size:0.8rem;margin-top:0.4rem;">Delivery: Rs. 1,000 (5 kits)</div>
+            </div>
+        </div>
+
+        <div class="rules-note">
+            <span><span class="rule-icon">📦</span> Minimum order: <strong>5 items</strong></span>
+            <span><span class="rule-icon">💵</span> Cash on Delivery</span>
+            <span><span class="rule-icon">🚚</span> Nationwide delivery</span>
+        </div>
+    </section>
+
+    <!-- ==================== SHIRTS SECTION ==================== -->
+    <section class="section" id="shirts">
+        <div class="section-header">
+            <h2>👕 <span class="gold-underline">Shirt Designs</span></h2>
+            <p class="section-subtitle">Browse our shirt collection -- click any design to place an order</p>
+        </div>
+        <div class="gallery-grid" id="shirtsGrid">
+            <!-- Dynamically populated by JS -->
+        </div>
+    </section>
+
+    <!-- ==================== KITS SECTION ==================== -->
+    <section class="section" id="kits">
+        <div class="section-header">
+            <h2>🩳 <span class="gold-underline">Full Kit Designs</span></h2>
+            <p class="section-subtitle">Shirt + Trouser combos -- click any design to place an order</p>
+        </div>
+        <div class="gallery-grid" id="kitsGrid">
+            <!-- Dynamically populated by JS -->
+        </div>
+    </section>
+
+    <!-- ==================== CUSTOM DESIGN SECTION ==================== -->
+    <section class="section" id="custom">
+        <div class="section-header">
+            <h2>🎨 <span class="gold-underline">Custom Design</span></h2>
+            <p class="section-subtitle">Have your own design? Upload it to Google Drive and share the link below</p>
+        </div>
+        <div class="form-card">
+            <div class="instructions-box">
+                <strong>📋 Instructions:</strong>
+                <ol>
+                    <li>Upload your design image to <strong>Google Drive</strong></li>
+                    <li>Right-click the file → <strong>Share</strong> → Set access to <strong>"Anyone with the link can view"</strong></li>
+                    <li>Copy the share link and paste it below</li>
+                </ol>
+            </div>
+            <form id="customDesignForm" onsubmit="return handleCustomSubmit(event)">
+                <!-- 🔧 REPLACE with your Formspree endpoint for custom designs -->
+                <input type="hidden" name="_subject" value="New Custom Design Request - Flex Fit Jersey">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Your Name <span class="required-star">*</span></label>
+                        <input type="text" name="name" required placeholder="Enter your full name">
+                    </div>
+                    <div class="form-group">
+                        <label>Email <span class="required-star">*</span></label>
+                        <input type="email" name="email" required placeholder="your@email.com">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number <span class="required-star">*</span></label>
+                    <input type="tel" name="phone" required placeholder="03XX-XXXXXXX">
+                </div>
+                <div class="form-group">
+                    <label>Google Drive Link <span class="required-star">*</span></label>
+                    <input type="url" name="drive_link" required placeholder="https://drive.google.com/file/d/...">
+                </div>
+                <div class="form-group">
+                    <label>Additional Notes</label>
+                    <textarea name="notes" placeholder="Any specific requirements, team name, quantity, etc."></textarea>
+                </div>
+                <button type="submit" class="btn btn-gold">📤 Submit Custom Design</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- ==================== CONTACT SECTION ==================== -->
+    <section class="section" id="contact">
+        <div class="section-header">
+            <h2>📞 <span class="gold-underline">Contact Us</span></h2>
+            <p class="section-subtitle">Have questions? Reach out and we'll get back to you ASAP</p>
+        </div>
+        <div class="contact-grid">
+            <div class="contact-info">
+                <div class="contact-info-item">
+                    <span class="ci-icon">📍</span>
+                    <span>Flex Fit Jersey, Sports Market, Lahore, Pakistan</span>
+                </div>
+                <div class="contact-info-item">
+                    <span class="ci-icon">📱</span>
+                    <span>+92 300 1234567</span>
+                </div>
+                <div class="contact-info-item">
+                    <span class="ci-icon">✉️</span>
+                    <span>orders@flexfitjersey.com</span>
+                </div>
+                <div class="contact-info-item">
+                    <span class="ci-icon">🕐</span>
+                    <span>Mon–Sat, 10 AM – 8 PM</span>
+                </div>
+            </div>
+            <div class="form-card" style="max-width:100%;">
+                <form id="contactForm" onsubmit="return handleContactSubmit(event)">
+                    <!-- 🔧 REPLACE with your Formspree endpoint for contact form -->
+                    <input type="hidden" name="_subject" value="New Contact Message - Flex Fit Jersey">
+                    <div class="form-group">
+                        <label>Name <span class="required-star">*</span></label>
+                        <input type="text" name="name" required placeholder="Your name">
+                    </div>
+                    <div class="form-group">
+                        <label>Email <span class="required-star">*</span></label>
+                        <input type="email" name="email" required placeholder="your@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Message <span class="required-star">*</span></label>
+                        <textarea name="message" required placeholder="How can we help?"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-gold">✉️ Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="footer">
+        <p>&copy; 2026 <strong>Flex Fit Jersey</strong>. All rights reserved. | Cash on Delivery Nationwide</p>
+    </footer>
+
+    <!-- ==================== ORDER MODAL ==================== -->
+    <div class="modal-overlay" id="orderModalOverlay">
+        <div class="modal" id="orderModal">
+            <button class="modal-close" id="modalClose" aria-label="Close">&times;</button>
+            <div class="modal-header">
+                <h2>📋 Place Your Order</h2>
+                <p class="design-ref" id="modalDesignRef"></p>
+            </div>
+            <form id="orderForm" onsubmit="return handleOrderSubmit(event)">
+                <!-- 🔧 REPLACE with your Formspree endpoint for orders -->
+                <input type="hidden" name="_subject" value="New Jersey Order - Flex Fit Jersey">
+                <input type="hidden" name="design_type" id="hiddenDesignType">
+                <input type="hidden" name="design_name" id="hiddenDesignName">
+                <input type="hidden" name="design_image" id="hiddenDesignImage">
+
+                <div class="form-group">
+                    <label>Who is Ordering? (Orderer Name) <span class="required-star">*</span></label>
+                    <input type="text" name="orderer_name" required placeholder="Full name of the person placing the order">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Email <span class="required-star">*</span></label>
+                        <input type="email" name="email" required placeholder="your@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number <span class="required-star">*</span></label>
+                        <input type="tel" name="phone" required placeholder="03XX-XXXXXXX">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Delivery Address <span class="required-star">*</span></label>
+                    <textarea name="address" required placeholder="Full delivery address" rows="2"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Quantity (min 5) <span class="required-star">*</span></label>
+                        <input type="number" name="quantity" id="orderQuantity" required min="5" value="5" placeholder="5">
+                    </div>
+                    <div class="form-group">
+                        <label>Sleeve Type <span class="required-star">*</span></label>
+                        <select name="sleeve_type" required>
+                            <option value="">Select...</option>
+                            <option value="Full">Full Sleeve</option>
+                            <option value="Half">Half Sleeve</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Collar Type <span class="required-star">*</span></label>
+                        <select name="collar_type" required>
+                            <option value="">Select...</option>
+                            <option value="Round">Round Neck</option>
+                            <option value="V-Neck">V-Neck</option>
+                            <option value="Polo">Polo Collar</option>
+                            <option value="Chinese">Chinese/Mandarin Collar</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Team Name <span class="required-star">*</span></label>
+                        <input type="text" name="team_name" required placeholder="Printed on shirt center">
+                    </div>
+                </div>
+
+                <!-- Player Blocks -->
+                <div class="form-group">
+                    <label>👥 Player Details</label>
+                    <div class="player-blocks-container" id="playerBlocksContainer">
+                        <!-- Dynamically generated -->
+                    </div>
+                </div>
+
+                <!-- Price Summary -->
+                <div class="price-summary" id="priceSummary">
+                    <div class="ps-row"><span>Item Price:</span><span id="psUnitPrice">Rs. 0</span></div>
+                    <div class="ps-row"><span>Quantity:</span><span id="psQty">5</span></div>
+                    <div class="ps-row"><span>Subtotal:</span><span id="psSubtotal">Rs. 0</span></div>
+                    <div class="ps-row"><span>Delivery (est.):</span><span id="psDelivery">Rs. 0</span></div>
+                    <div class="ps-row total"><span>Total (est.):</span><span id="psTotal">Rs. 0</span></div>
+                </div>
+
+                <button type="submit" class="btn btn-gold" style="width:100%;margin-top:1rem;font-size:1.05rem;">
+                    ✅ Submit Order (COD)
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== TOAST ==================== -->
+    <div class="toast" id="toast"></div>
+
+    <!-- ==================== JAVASCRIPT ==================== -->
+    <script>
+        (function() {
+            // ========== CONFIGURATION ==========
+            // 🔧 UPDATE THESE ARRAYS with your actual image filenames
+            const shirtDesigns = [
+                { name: 'Stripe Pro', image: 'shirts/design-1.jpg' },
+                { name: 'Solid Classic', image: 'shirts/design-2.jpg' },
+                { name: 'Gradient Edge', image: 'shirts/design-3.jpg' },
+                { name: 'Retro Hoops', image: 'shirts/design-4.jpg' },
+                { name: 'Slim Fit Tech', image: 'shirts/design-5.jpg' },
+                { name: 'Bold Panel', image: 'shirts/design-6.jpg' },
+                { name: 'Vintage Stripe', image: 'shirts/design-7.jpg' },
+                { name: 'Modern Geo', image: 'shirts/design-8.jpg' },
+            ];
+
+            const kitDesigns = [
+                { name: 'Thunder Kit', image: 'kits/kit-1.jpg' },
+                { name: 'Blaze Combo', image: 'kits/kit-2.jpg' },
+                { name: 'Shadow Pack', image: 'kits/kit-3.jpg' },
+                { name: 'Elite Set', image: 'kits/kit-4.jpg' },
+                { name: 'Storm Kit', image: 'kits/kit-5.jpg' },
+                { name: 'Phoenix Kit', image: 'kits/kit-6.jpg' },
+                { name: 'Titan Combo', image: 'kits/kit-7.jpg' },
+                { name: 'Apex Set', image: 'kits/kit-8.jpg' },
+            ];
+
+            // 🔧 REPLACE THESE with your actual Formspree endpoint IDs
+            const FORMSPREE_ORDER = 'https://formspree.io/f/myklvgww';
+            const FORMSPREE_CUSTOM = 'https://formspree.io/f/xeevdjye';
+            const FORMSPREE_CONTACT = 'https://formspree.io/f/xpqknavr';
+
+            // Pricing
+            const SHIRT_PRICE = 1000;
+            const KIT_PRICE = 1700;
+            const SHIRT_DELIVERY_BASE = 500; // for 5 shirts
+            const KIT_DELIVERY_BASE = 1000; // for 5 kits
+
+            // ========== DOM ELEMENTS ==========
+            const shirtsGrid = document.getElementById('shirtsGrid');
+            const kitsGrid = document.getElementById('kitsGrid');
+            const modalOverlay = document.getElementById('orderModalOverlay');
+            const modalClose = document.getElementById('modalClose');
+            const modalDesignRef = document.getElementById('modalDesignRef');
+            const hiddenDesignType = document.getElementById('hiddenDesignType');
+            const hiddenDesignName = document.getElementById('hiddenDesignName');
+            const hiddenDesignImage = document.getElementById('hiddenDesignImage');
+            const orderQuantity = document.getElementById('orderQuantity');
+            const playerBlocksContainer = document.getElementById('playerBlocksContainer');
+            const orderForm = document.getElementById('orderForm');
+            const customDesignForm = document.getElementById('customDesignForm');
+            const contactFormEl = document.getElementById('contactForm');
+            const toast = document.getElementById('toast');
+            const navHamburger = document.getElementById('navHamburger');
+            const navLinks = document.getElementById('navLinks');
+
+            let currentDesignType = 'shirt'; // 'shirt' or 'kit'
+
+            // ========== BUILD GALLERY CARDS ==========
+            function buildCard(design, type) {
+                const card = document.createElement('div');
+                card.className = 'design-card';
+                card.setAttribute('role', 'button');
+                card.setAttribute('tabindex', '0');
+                card.setAttribute('aria-label', `Order ${design.name}`);
+                card.innerHTML = `
+                    <div class="card-img-wrapper">
+                        <img src="${design.image}" alt="${design.name}" loading="lazy"
+                             onerror="this.style.display='none';this.parentElement.querySelector('.card-img-placeholder').style.display='flex';">
+                        <div class="card-img-placeholder" style="display:none;">
+                            <span class="placeholder-icon">🖼️</span>
+                            <span>${design.name}</span>
+                            <span style="font-size:0.7rem;">Image not found</span>
+                        </div>
+                        <div class="card-overlay"><span>View & Order</span></div>
+                    </div>
+                    <div class="card-info">
+                        <span class="card-type">${type === 'shirt' ? '👕 Shirt' : '🩳 Full Kit'}</span>
+                        <h3>${design.name}</h3>
+                    </div>
+                `;
+                card.addEventListener('click', () => openOrderModal(type, design));
+                card.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        openOrderModal(type, design);
+                    }
+                });
+                return card;
+            }
+
+            function populateGallery(grid, designs, type) {
+                grid.innerHTML = '';
+                designs.forEach(design => {
+                    grid.appendChild(buildCard(design, type));
+                });
+            }
+
+            populateGallery(shirtsGrid, shirtDesigns, 'shirt');
+            populateGallery(kitsGrid, kitDesigns, 'kit');
+
+            // ========== MODAL LOGIC ==========
+            function openOrderModal(type, design) {
+                currentDesignType = type;
+                hiddenDesignType.value = type;
+                hiddenDesignName.value = design.name;
+                hiddenDesignImage.value = design.image;
+                modalDesignRef.textContent = `Selected: ${type === 'shirt' ? '👕 Shirt' : '🩳 Kit'} -- "${design.name}"`;
+                orderQuantity.value = 5;
+                document.body.style.overflow = 'hidden';
+                modalOverlay.classList.add('active');
+                generatePlayerBlocks(5);
+                updatePriceSummary();
+                // Reset form
+                orderForm.reset();
+                hiddenDesignType.value = type;
+                hiddenDesignName.value = design.name;
+                hiddenDesignImage.value = design.image;
+                orderQuantity.value = 5;
+                document.getElementById('orderForm').querySelector('select[name="sleeve_type"]').value = '';
+                document.getElementById('orderForm').querySelector('select[name="collar_type"]').value = '';
+                document.getElementById('orderForm').querySelector('input[name="team_name"]').value = '';
+            }
+
+            function closeOrderModal() {
+                document.body.style.overflow = '';
+                modalOverlay.classList.remove('active');
+            }
+
+            modalClose.addEventListener('click', closeOrderModal);
+            modalOverlay.addEventListener('click', (e) => {
+                if (e.target === modalOverlay) closeOrderModal();
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+                    closeOrderModal();
+                }
+            });
+
+            // ========== DYNAMIC PLAYER BLOCKS ==========
+            function generatePlayerBlocks(count) {
+                playerBlocksContainer.innerHTML = '';
+                const fragment = document.createDocumentFragment();
+                for (let i = 1; i <= count; i++) {
+                    const block = document.createElement('div');
+                    block.className = 'player-block';
+                    block.style.animationDelay = `${(i - 1) * 0.04}s`;
+                    block.innerHTML = `
+                        <span class="player-index">#${i}</span>
+                        <div>
+                            <span class="pb-label">Player Name</span>
+                            <input type="text" name="player_${i}_name" placeholder="Name" required>
+                        </div>
+                        <div>
+                            <span class="pb-label">Jersey #</span>
+                            <input type="text" name="player_${i}_number" placeholder="No." required>
+                        </div>
+                        <div>
+                            <span class="pb-label">Size</span>
+                            <select name="player_${i}_size" required>
+                                <option value="">Size</option>
+                                <option value="S">S</option>
+                                <option value="M">M</option>
+                                <option value="L">L</option>
+                                <option value="XL">XL</option>
+                            </select>
+                        </div>
+                    `;
+                    fragment.appendChild(block);
+                }
+                playerBlocksContainer.appendChild(fragment);
+            }
+
+            orderQuantity.addEventListener('input', function() {
+                let val = parseInt(this.value);
+                if (isNaN(val) || val < 5) {
+                    this.value = 5;
+                    val = 5;
+                }
+                if (val > 50) {
+                    this.value = 50;
+                    val = 50;
+                }
+                generatePlayerBlocks(val);
+                updatePriceSummary();
+            });
+
+            orderQuantity.addEventListener('change', function() {
+                let val = parseInt(this.value);
+                if (isNaN(val) || val < 5) {
+                    this.value = 5;
+                    val = 5;
+                }
+                generatePlayerBlocks(val);
+                updatePriceSummary();
+            });
+
+            // ========== PRICE SUMMARY ==========
+            function updatePriceSummary() {
+                const qty = parseInt(orderQuantity.value) || 5;
+                const unitPrice = currentDesignType === 'shirt' ? SHIRT_PRICE : KIT_PRICE;
+                const subtotal = unitPrice * qty;
+                const baseDelivery = currentDesignType === 'shirt' ? SHIRT_DELIVERY_BASE : KIT_DELIVERY_BASE;
+                // Delivery scales proportionally (base delivery is for 5 items)
+                const deliveryEst = Math.round((baseDelivery / 5) * qty);
+                const total = subtotal + deliveryEst;
+
+                document.getElementById('psUnitPrice').textContent = `Rs. ${unitPrice.toLocaleString()}`;
+                document.getElementById('psQty').textContent = qty;
+                document.getElementById('psSubtotal').textContent = `Rs. ${subtotal.toLocaleString()}`;
+                document.getElementById('psDelivery').textContent = `Rs. ${deliveryEst.toLocaleString()}`;
+                document.getElementById('psTotal').textContent = `Rs. ${total.toLocaleString()}`;
+            }
+
+            // Update price when type changes (handled in openOrderModal)
+            // Also update on quantity change
+            orderQuantity.addEventListener('input', updatePriceSummary);
+            orderQuantity.addEventListener('change', updatePriceSummary);
+
+            // ========== FORM SUBMISSION ==========
+            function showToast(message, isError = false) {
+                toast.textContent = message;
+                toast.className = 'toast ' + (isError ? 'error' : '');
+                // Force reflow
+                void toast.offsetWidth;
+                toast.classList.add('show');
+                clearTimeout(toast._timeout);
+                toast._timeout = setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 4000);
+            }
+
+            async function submitForm(formElement, formspreeUrl) {
+                const formData = new FormData(formElement);
+                try {
+                    const response = await fetch(formspreeUrl, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'Accept': 'application/json',
+                        },
+                    });
+                    if (response.ok) {
+                        showToast('✅ Submitted successfully! We\'ll contact you soon.');
+                        formElement.reset();
+                        return true;
+                    } else {
+                        const data = await response.json();
+                        if (data.errors) {
+                            showToast('⚠️ ' + data.errors.map(e => e.message).join(', '), true);
+                        } else {
+                            showToast('⚠️ Something went wrong. Please try again.', true);
+                        }
+                        return false;
+                    }
+                } catch (error) {
+                    console.error('Form submission error:', error);
+                    showToast('⚠️ Network error. Please check your connection.', true);
+                    return false;
+                }
+            }
+
+            // Order form handler
+            window.handleOrderSubmit = async function(event) {
+                event.preventDefault();
+                // Validate quantity
+                const qty = parseInt(orderQuantity.value);
+                if (isNaN(qty) || qty < 5) {
+                    showToast('⚠️ Minimum order quantity is 5 items.', true);
+                    return false;
+                }
+                // Validate all player blocks are filled
+                const playerInputs = playerBlocksContainer.querySelectorAll('input[required], select[required]');
+                let allFilled = true;
+                playerInputs.forEach(input => {
+                    if (!input.value.trim()) {
+                        allFilled = false;
+                        input.style.borderColor = 'var(--danger)';
+                        setTimeout(() => { input.style.borderColor = ''; }, 2000);
+                    }
+                });
+                if (!allFilled) {
+                    showToast('⚠️ Please fill in all player details.', true);
+                    return false;
+                }
+                const success = await submitForm(orderForm, FORMSPREE_ORDER);
+                if (success) {
+                    closeOrderModal();
+                    orderForm.reset();
+                    orderQuantity.value = 5;
+                    generatePlayerBlocks(5);
+                }
+                return false;
+            };
+
+            // Custom design form handler
+            window.handleCustomSubmit = async function(event) {
+                event.preventDefault();
+                const success = await submitForm(customDesignForm, FORMSPREE_CUSTOM);
+                if (success) {
+                    customDesignForm.reset();
+                }
+                return false;
+            };
+
+            // Contact form handler
+            window.handleContactSubmit = async function(event) {
+                event.preventDefault();
+                const success = await submitForm(contactFormEl, FORMSPREE_CONTACT);
+                if (success) {
+                    contactFormEl.reset();
+                }
+                return false;
+            };
+
+            // ========== MOBILE NAV ==========
+            navHamburger.addEventListener('click', () => {
+                navLinks.classList.toggle('open');
+            });
+            // Close nav when a link is clicked
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('open');
+                });
+            });
+            // Close nav when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!navLinks.contains(e.target) && !navHamburger.contains(e.target) && navLinks
+                    .classList.contains('open')) {
+                    navLinks.classList.remove('open');
+                }
+            });
+
+            // ========== INITIAL SETUP ==========
+            generatePlayerBlocks(5);
+            updatePriceSummary();
+
+            console.log('%c🏆 Flex Fit Jersey %cReady %c| %cCOD Orders Only',
+                'color:#d4a853;font-size:1.2em;font-weight:bold;',
+                'color:#4caf84;',
+                'color:#a0a0a0;',
+                'color:#e6e6e6;');
+            console.log('%c📁 Configure image arrays & Formspree endpoints in the script section.',
+                'color:#a0a0a0;font-style:italic;');
+            console.log('%c🔧 Formspree endpoints need to be updated with your actual IDs.',
+                'color:#e8c97a;');
+        })();
+    </script>
+</body>
+</html>
