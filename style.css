@@ -280,11 +280,7 @@ textarea {
 }
 
 .glow-one {
-  width: 250px;
-  height: 250px;
-  top: 30px;
-  right: 10px;
-  background: rgba(159, 70, 255, 0.28);
+  display: none;
 }
 
 .glow-two {
