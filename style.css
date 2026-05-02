@@ -266,7 +266,7 @@ textarea {
 
 .hero-jersey-pair {
   position: absolute;
-  inset: 40px 0 20px;
+  inset: 20px 0 20px;
   display: flex;
   align-items: center;
   justify-content: center;
