@@ -303,6 +303,8 @@ textarea {
 .jersey-front {
   background: transparent;
   animation: floatFront 4.2s ease-in-out infinite;
+  width: 240px;
+  height: 360px;
 }
 
 .jersey-back {
