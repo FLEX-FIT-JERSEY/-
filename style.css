@@ -299,15 +299,13 @@ textarea {
   position: relative;
   border-radius: 28px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: none;
   width: min(220px, 42vw);
   height: 360px;
 }
 
 .jersey-front {
-  background:
-    linear-gradient(160deg, rgba(255, 255, 255, 0.18), transparent 30%),
-    linear-gradient(135deg, #130717 0%, #270615 28%, #4f0823 48%, #3d0f61 72%, #19081f 100%);
+  background: transparent;
   animation: floatFront 4.2s ease-in-out infinite;
 }
 
@@ -317,9 +315,7 @@ textarea {
   justify-content: center;
   align-items: center;
   gap: 10px;
-  background:
-    linear-gradient(160deg, rgba(255, 255, 255, 0.12), transparent 30%),
-    linear-gradient(135deg, #0f0815 0%, #2c0613 42%, #20073d 100%);
+  background: transparent;
   animation: floatBack 4.8s ease-in-out infinite;
 }
 
