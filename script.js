@@ -236,56 +236,6 @@ function validateFormspreeLink(form) {
   return true;
 }
 
-function resetOrderForm() {
-  // Clear all customer step fields
-  const customerName = document.getElementById("customerName");
-  const customerEmail = document.getElementById("customerEmail");
-  const customerPhone = document.getElementById("customerPhone");
-  const customerAddress = document.getElementById("customerAddress");
-  
-  if (customerName) customerName.value = "";
-  if (customerEmail) customerEmail.value = "";
-  if (customerPhone) customerPhone.value = "";
-  if (customerAddress) customerAddress.value = "";
-  
-  // Reset quantity to default (5)
-  if (quantityInput) quantityInput.value = "5";
-  
-  // Update totals after reset
-  updateModalTotals();
-  
-  // Reset player fields container (clears all dynamically added player rows)
-  if (playerFields) playerFields.innerHTML = "";
-  
-  // Reset step back to step 1
-  showStep(1);
-}
-
-function resetCustomOrderForm() {
-  // Clear custom form fields
-  const customCustomerName = document.getElementById("customCustomerName");
-  const customCustomerEmail = document.getElementById("customCustomerEmail");
-  const customCustomerPhone = document.getElementById("customCustomerPhone");
-  const customCustomerAddress = document.getElementById("customCustomerAddress");
-  
-  if (customCustomerName) customCustomerName.value = "";
-  if (customCustomerEmail) customCustomerEmail.value = "";
-  if (customCustomerPhone) customCustomerPhone.value = "";
-  if (customCustomerAddress) customCustomerAddress.value = "";
-  
-  // Reset custom quantity to default (5)
-  if (customQuantityInput) customQuantityInput.value = "5";
-  
-  // Reset custom type to default (shirt)
-  if (customOrderType) customOrderType.value = "shirt";
-  
-  // Update custom totals after reset
-  updateCustomTotals();
-  
-  // Reset custom player fields container
-  if (customPlayerFields) customPlayerFields.innerHTML = "";
-}
-
 designCards.forEach((card) => {
   card.addEventListener("click", () => openProductModal(card));
 });
@@ -326,16 +276,6 @@ orderForm.addEventListener("submit", (event) => {
   if (!validateFormspreeLink(orderForm)) {
     event.preventDefault();
   }
-  
-  // ✅ CLEAR FORM DATA AFTER SUBMIT - Removes all entered info
-  resetOrderForm();
-  
-  // Optional: Show success message instead of Formspree page
-  event.preventDefault(); // This prevents Formspree redirect
-  window.alert("✅ Order submitted successfully! Your form has been cleared.");
-  
-  // Close the modal after submission
-  closeOrderModal();
 });
 
 customOrderForm.addEventListener("submit", (event) => {
@@ -350,13 +290,6 @@ customOrderForm.addEventListener("submit", (event) => {
   if (!validateFormspreeLink(customOrderForm)) {
     event.preventDefault();
   }
-  
-  // ✅ CLEAR FORM DATA AFTER SUBMIT - Removes all entered info
-  resetCustomOrderForm();
-  
-  // Prevent Formspree redirect and show custom message
-  event.preventDefault();
-  window.alert("✅ Custom order submitted successfully! Your form has been cleared.");
 });
 
 updateModalTotals();
