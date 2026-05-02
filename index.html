@@ -631,5 +631,81 @@
   </section>
 
   <script src="script.js"></script>
+  <!-- Add Supabase library -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+  // Initialize Supabase
+  const SUPABASE_URL = 'https://wduseugfcrsildssotkg.supabase.co';  // YOUR URL
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndkdXNldWdmY3JzaWxkc3NvdGtnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3MTM4NzAsImV4cCI6MjA5MzI4OTg3MH0.mUwi74dZr6RD6vY5ISnBwr3nWDCIxdhS7Af11w7sbZM';  // YOUR anon key
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  // ========== SIGNUP FUNCTION ==========
+  async function signUp(email, password) {
+    const { data, error } = await supabase.auth.signUp({
+      email: email,
+      password: password
+    });
+    
+    if (error) {
+      alert('Error: ' + error.message);
+      return false;
+    }
+    
+    alert('Success! Check your email (or login now)');
+    return true;
+  }
+
+  // ========== LOGIN FUNCTION ==========
+  async function login(email, password) {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password
+    });
+    
+    if (error) {
+      alert('Login failed: ' + error.message);
+      return false;
+    }
+    
+    // Check if user is admin
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', data.user.id)
+      .single();
+    
+    if (profile?.role === 'admin') {
+      window.location.href = '/admin-dashboard.html';
+    } else {
+      window.location.href = '/user-dashboard.html';
+    }
+    
+    return true;
+  }
+
+  // ========== CHECK CURRENT USER ==========
+  async function checkUser() {
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    if (!user && !window.location.pathname.includes('login.html')) {
+      window.location.href = '/login.html';
+    }
+    
+    return user;
+  }
+
+  // ========== LOGOUT FUNCTION ==========
+  async function logout() {
+    await supabase.auth.signOut();
+    window.location.href = '/login.html';
+  }
+
+  // Run on page load
+  if (window.location.pathname !== '/login.html' && 
+      window.location.pathname !== '/signup.html') {
+    checkUser();
+  }
+      </script>
 </body>
 </html>
