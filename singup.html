@@ -1,0 +1,42 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html>
+<head>
+    <title>Sign Up</title>
+</head>
+<body>
+    <h2>Sign Up</h2>
+    <input type="email" id="signupEmail" placeholder="Email">
+    <br>
+    <input type="password" id="signupPassword" placeholder="Password">
+    <br>
+    <button onclick="handleSignUp()">Create Account</button>
+    <p>Already have an account? <a href="login.html">Login</a></p>
+
+    <!-- Add Supabase library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <script>
+        // Initialize Supabase
+        const SUPABASE_URL = 'https://wduseugfcrsildssotkg.supabase.co';  // REPLACE WITH YOUR URL
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndkdXNldWdmY3JzaWxkc3NvdGtnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3MTM4NzAsImV4cCI6MjA5MzI4OTg3MH0.mUwi74dZr6RD6vY5ISnBwr3nWDCIxdhS7Af11w7sbZM';  // REPLACE WITH YOUR KEY
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        async function handleSignUp() {
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            
+            const { data, error } = await supabase.auth.signUp({
+                email: email,
+                password: password
+            });
+            
+            if (error) {
+                alert('Error: ' + error.message);
+            } else {
+                alert('Success! Please login.');
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
+</body>
+</html>
