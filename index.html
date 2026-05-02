@@ -93,7 +93,30 @@
           </div>
         </div>
       </section>
+<!-- Login/Signup Section -->
+<section id="auth-section">
+    <div id="login-section">
+        <h3>Login to Your Account</h3>
+        <input type="email" id="loginEmail" placeholder="Email">
+        <input type="password" id="loginPassword" placeholder="Password">
+        <button onclick="handleLogin()">Login</button>
+        <p>New user? <a href="#" onclick="showSignup()">Create Account</a></p>
+    </div>
 
+    <div id="signup-section" style="display:none;">
+        <h3>Create New Account</h3>
+        <input type="email" id="signupEmail" placeholder="Email">
+        <input type="password" id="signupPassword" placeholder="Password">
+        <button onclick="handleSignup()">Sign Up</button>
+        <p>Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
+    </div>
+
+    <!-- Logged-in user info (hidden initially) -->
+    <div id="user-info" style="display:none;">
+        <p>Welcome, <span id="userEmail"></span></p>
+        <button onclick="handleLogout()">Logout</button>
+    </div>
+</section>
       <section class="section products" id="shirts">
         <div class="section-heading">
           <p class="eyebrow">Shirts</p>
