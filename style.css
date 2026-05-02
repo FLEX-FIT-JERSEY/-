@@ -300,7 +300,7 @@ textarea {
   border-radius: 28px;
   overflow: hidden;
   border: none;
-  width: min(220px, 42vw);
+  width: min(240px, 42vw);
   height: 360px;
 }
 
